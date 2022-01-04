@@ -3,6 +3,39 @@ import { v4 as uuidv4 } from "uuid";
 import React, { useState } from "react";
 
 export default function Mod() {
+  //Clears textfield after input
+  const initialValues = {
+    date: "",
+    description: "",
+    tag: "",
+    answer: "",
+  };
+
+  const [input, setInput] = useState(initialValues);
+
+  //Updates input state
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setInput({
+      ...input,
+      [name]: value,
+    });
+  }
+
+  //Creates new list item and updates list on submit
+  function handleSubmit(e) {
+    e.preventDefault();
+    const newItem = {
+      id: uuidv4(),
+      date: input.date,
+      description: input.description,
+      tag: input.tag,
+    };
+
+    setList([...list, newItem]);
+    setInput(initialValues);
+  }
+
   let [list, setList] = useState([
     {
       id: "014747ee-2784-44ef-8887-88f381e3baay",
