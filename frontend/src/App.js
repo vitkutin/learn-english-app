@@ -6,26 +6,25 @@ import { v4 as uuidv4 } from "uuid";
 import { FaRegTrashAlt, FaEdit, FaAngleDown, FaAngleUp } from "react-icons/fa";
 
 function App() {
-  //async function componentDidMount() {
-  //let hr = await fetch("http://localhost:8080/vocabulary");
-  //let json = await hr.json();
-  //this.setState({ vocabulary: json });
-  //}
+  let [list, setList] = useState([]);
+
+  function Random() {
+    return Math.floor(Math.random() * 3 + 1);
+  }
+
+  //Show a random exercise
+  useState(() => {
+    fetch(`http://localhost:8080/vocabulary/${Random()}/`)
+      .then((response) => response.json())
+      .then((data) => setList(data));
+  });
 
   //Clears textfield after input
   const initialValues = {
-    date: "",
-    description: "",
-    tag: "",
-    search: "",
+    answer: "",
   };
 
   const [input, setInput] = useState(initialValues);
-
-  //List of tasks (contains one example task)
-  let [list, setList] = useState([
-    { id: 1, in_finnish: "tuoli", in_english: "chair" },
-  ]);
 
   //Updates input state
   function handleInputChange(e) {
@@ -36,17 +35,12 @@ function App() {
     });
   }
 
-  //Creates new list item and updates list on submit
+  //MITEN SAADAAN LIST.MAP(E) ELI KYSEINEN OBJEKTI TÄMÄN FUNKTION KÄYTTÖÖN?
   function handleSubmit(e) {
     e.preventDefault();
-    const newItem = {
-      id: uuidv4(),
-      date: input.date,
-      description: input.description,
-      tag: input.tag,
-    };
+    const answer = input.answer;
+    console.log(answer);
 
-    setList([...list, newItem]);
     setInput(initialValues);
   }
 
@@ -66,17 +60,18 @@ function App() {
               <span id="fin">{e.in_finnish}</span>
               <form onSubmit={handleSubmit}>
                 <input
-                  value={input.search}
+                  name="answer"
+                  value={input.answer}
                   onChange={handleInputChange}
                   placeholder="In english..."
                 />
+                <button id="submit" type="submit">
+                  Submit
+                </button>
               </form>
             </div>
           </div>
         ))}
-        <button id="submit" type="submit">
-          Submit
-        </button>
       </div>
     </div>
   );
