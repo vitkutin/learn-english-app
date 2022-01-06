@@ -84,6 +84,17 @@ let connectionFunctions = {
         }
       );
     }),
+
+  findIds: () =>
+    new Promise((resolve, reject) => {
+      connection.query("SELECT id FROM vocabulary", (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      });
+    }),
 };
 
 module.exports = connectionFunctions;

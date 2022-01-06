@@ -3,14 +3,18 @@ import React, { useState, useEffect } from "react";
 
 function User() {
   let [list, setList] = useState([]);
+  let [data, setData] = useState("");
 
-  function Random() {
-    return Math.floor(Math.random() * 10 + 1);
+  //get random id from database
+  function random() {
+    fetch("http://localhost:8080/vocabulary/ids")
+      .then((res) => res.json())
+      .then((data) => setData(data.id));
   }
 
   //Show a random exercise
   useEffect(() => {
-    fetch(`http://localhost:8080/vocabulary/${Random}/`)
+    fetch(`http://localhost:8080/vocabulary/5`)
       .then((response) => response.json())
       .then((data) => setList(data));
   }, []);
@@ -31,7 +35,6 @@ function User() {
     });
   }
 
-  //MITEN SAADAAN LIST.MAP(E) ELI KYSEINEN OBJEKTI TÄMÄN FUNKTION KÄYTTÖÖN?
   function handleSubmit(e) {
     e.preventDefault();
     const answer = input.answer;

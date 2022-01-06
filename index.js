@@ -25,6 +25,17 @@ app.get("/vocabulary", async (req, res) => {
   }
 });
 
+//Fetch all id's from database and send a random id as response
+app.get("/vocabulary/ids", async (req, res) => {
+  try {
+    let idList = await connection.findIds();
+    let randomId = idList[Math.floor(Math.random() * idList.length)];
+    res.send(randomId);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 //Fetch an item from database by id
 app.get("/vocabulary/:id([0-9]+)", async (req, res) => {
   try {
