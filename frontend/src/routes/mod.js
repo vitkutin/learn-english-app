@@ -1,17 +1,24 @@
-import { FaRegTrashAlt, FaEdit, FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { FaRegTrashAlt, FaEdit } from "react-icons/fa";
 import { v4 as uuidv4 } from "uuid";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function Mod() {
   //Clears textfield after input
   const initialValues = {
-    date: "",
-    description: "",
-    tag: "",
-    answer: "",
+    finnish: "",
+    english: "",
   };
 
   const [input, setInput] = useState(initialValues);
+
+  let [list, setList] = useState([]);
+
+  //Show exercises
+  useEffect(() => {
+    fetch(`http://localhost:8080/vocabulary/`)
+      .then((response) => response.json())
+      .then((data) => setList(data));
+  }, []);
 
   //Updates input state
   function handleInputChange(e) {
@@ -25,25 +32,22 @@ export default function Mod() {
   //Creates new list item and updates list on submit
   function handleSubmit(e) {
     e.preventDefault();
-    const newItem = {
-      id: uuidv4(),
-      date: input.date,
-      description: input.description,
-      tag: input.tag,
-    };
 
+    const newItem = {
+      in_finnish: input.finnish,
+      in_english: input.english,
+    };
     setList([...list, newItem]);
-    setInput(initialValues);
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newItem),
+    };
+    fetch("http://localhost:8080/vocabulary/", options).then((res) =>
+      console.log(res)
+    );
   }
 
-  let [list, setList] = useState([
-    {
-      id: "014747ee-2784-44ef-8887-88f381e3baay",
-      date: "2021-14-12",
-      description: "Tiskaa",
-      tag: "kotityöt",
-    },
-  ]);
   //Edits task description and adds modified task to the end of the list
   function handleEdit(e) {
     let edited = window.prompt("Edit description");
@@ -59,31 +63,65 @@ export default function Mod() {
 
   //Filters element from list by comparing id's
   function handleDelete(e) {
-    setList(list.filter((el) => el.id !== e.id));
+    fetch(`http://localhost:8080/vocabulary/` + e.id, {
+      method: "delete",
+    })
+      .then((res) => res.text())
+      .then((res) => console.log(res))
+      .then(() => setList(list.filter((el) => el.id !== e.id)));
   }
-  return (
-    <main>
-      <h1>MODERATION</h1>
-      <div class="info-box">
-        <h2>Tekijä:</h2>
-        <p>Hilla Härkönen</p>
-        <h2>Käyttöohjeet:</h2>
-        <p>
-          Aloitusnäkymässä on mahdollista valita haluamansa sivu. Todo-sivu
-          toimii seuraavalla tavalla:
-        </p>
-        <span id="buttons">
-          {/* DELETE BUTTON */}
-          <button id="taskBtn">
-            <FaRegTrashAlt onClick={() => handleDelete()} />
-          </button>
 
-          {/* EDIT BUTTON */}
-          <button id="taskBtn">
-            <FaEdit onClick={() => handleEdit()} />
+  return (
+    <div>
+      <h1>EXERCISES</h1>
+      {/* Forms for date, description and tag */}
+      <div className="form-container">
+        <form onSubmit={handleSubmit}>
+          <input
+            id="fi-mod"
+            name="finnish"
+            value={input.finnish}
+            onChange={handleInputChange}
+            placeholder="In finnish"
+          />
+          <input
+            id="en-mod"
+            name="english"
+            value={input.english}
+            onChange={handleInputChange}
+            placeholder="In english"
+          />
+          <button id="submit-mod" type="submit">
+            Add exercise
           </button>
-        </span>
+        </form>
       </div>
-    </main>
+
+      {/* List */}
+      <div className="item-list-mod">
+        {list.map((e) => (
+          <div className="item-container">
+            {/* Elements */}
+            <div>
+              <span id="span-desc">
+                {" "}
+                {e.in_finnish} {" = "}{" "}
+              </span>
+              <span id="span-date"> {e.in_english} </span>
+              <span id="buttons">
+                {/* DELETE BUTTON */}
+                <button id="taskBtn">
+                  <FaRegTrashAlt onClick={() => handleDelete(e)} />
+                </button>
+                {/* EDIT BUTTON */}
+                <button id="taskBtn">
+                  <FaEdit onClick={() => handleEdit(e)} />
+                </button>
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
