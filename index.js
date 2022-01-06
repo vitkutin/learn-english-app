@@ -1,52 +1,56 @@
 const express = require("express");
 const app = express();
+var cors = require("cors");
 const connection = require("./crudrepository.js");
-
 const server = app.listen(8080, () => {
   console.log(`Listening in port ${server.address().port}`);
 });
 
 app.use(express.static("frontend/build"));
 
-//Header
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "*");
-  next();
-});
+app.use(cors());
+
+app.use(express.json());
 
 //Serve static content in directory "public"
 app.use(express.static("public"));
 
-//Get all
-app.get("/vocabulary", (req, res) => {
-  connection.findAll((err, voc) => {
-    if (err) throw err;
-    res.send(voc);
-  });
+//Fetch all items from database
+app.get("/vocabulary", async (req, res) => {
+  try {
+    let result = await connection.findAll();
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-//Find by id
-app.get("/vocabulary/:id([0-9]+)", (req, res) => {
-  connection.findById(req.params.id, (err, voc) => {
-    if (err) throw err;
-    res.send(voc);
-  });
+//Fetch an item from database by id
+app.get("/vocabulary/:id([0-9]+)", async (req, res) => {
+  try {
+    let result = await connection.findById(req.params.id);
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-//Delete by id
-app.delete("/vocabulary/:id([0-9]+)", (req, res) => {
-  connection.deleteById(req.params.id, (err, success) => {
-    if (err) throw err;
-    res.send("Deleted succesfully");
-  });
+//Delete an item from database by id
+app.delete("/vocabulary/:id([0-9]+)", async (req, res) => {
+  try {
+    connection.deleteById(req.params.id);
+    res.send(`Item deleted`);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
-//Save new
-app.use(express.json());
-
-app.post("/vocabulary/", (req, res) => {
-  connection.save(req.body, (err, success) => {
-    if (err) throw err;
-    res.send(req.body);
-  });
+//Save new item into database
+app.post("/vocabulary", async (req, res) => {
+  try {
+    await connection.save(req.body);
+    res.send(`Item added to the database`);
+  } catch (err) {
+    console.log(err);
+  }
 });

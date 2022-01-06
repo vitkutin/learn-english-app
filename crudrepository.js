@@ -1,86 +1,89 @@
 const mysql = require("mysql");
 require("dotenv").config();
 
-var pool = mysql.createPool({
-  connectionLimit: 10,
+const connection = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DB,
 });
 
-//?
 let connectionFunctions = {
-  connect: () => {
-    connection.connect();
+  //Connect to database
+  connect: (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      connection.connect();
+    }
   },
 
-  //?
-  close: (callback) => {
-    connection.end();
+  //Close connection to database
+  close: (err) => {
+    if (err) {
+      console.log(err);
+    } else {
+      connection.end();
+    }
   },
 
-  save: (voc, callback) => {
-    pool.getConnection(function (err, connection) {
-      if (err) throw err;
-      connection.query("INSERT INTO locations SET ?", voc, (err, success) => {
+  //Show all items in database
+  findAll: () =>
+    new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM vocabulary", (err, result) => {
         if (err) {
-          callback(err, null);
+          reject(err);
         } else {
-          callback(console.log("Success"));
+          resolve(result);
         }
-        connection.release();
       });
-    });
-  },
+    }),
 
-  findAll: (callback) => {
-    pool.getConnection(function (err, connection) {
-      if (err) throw err;
-      connection.query("SELECT * FROM vocabulary", (err, voc) => {
-        if (err) {
-          callback(err, null);
-        } else {
-          callback(null, voc);
-        }
-        connection.release();
-      });
-    });
-  },
-
-  deleteById: (id, callback) => {
-    pool.getConnection(function (err, connection) {
-      if (err) throw err;
-      connection.query(
-        "DELETE FROM vocabulary WHERE id = " + id,
-        (err, voc) => {
-          if (err) {
-            callback(err, null);
-          } else {
-            callback(null, voc);
-          }
-          connection.release();
-        }
-      );
-    });
-  },
-
-  findById: (id, callback) => {
-    pool.getConnection(function (err, connection) {
-      if (err) throw err;
+  //Find an item from database by id
+  findById: (id) =>
+    new Promise((resolve, reject) => {
       connection.query(
         "SELECT * FROM vocabulary WHERE id = " + id,
-        (err, voc) => {
+        (err, result) => {
           if (err) {
-            callback(err, null);
+            reject(err);
           } else {
-            callback(null, voc);
+            resolve(result);
           }
-          connection.release();
         }
       );
-    });
-  },
+    }),
+
+  //Delete an item from database by id
+  deleteById: (id) =>
+    new Promise((resolve, reject) => {
+      connection.query(
+        "DELETE FROM vocabulary WHERE id = " + id,
+        (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+    }),
+
+  //Save new item into database
+  save: (newItem) =>
+    new Promise((resolve, reject) => {
+      connection.query(
+        "INSERT INTO vocabulary SET ?",
+        newItem,
+        (err, result) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(result);
+          }
+        }
+      );
+    }),
 };
 
 module.exports = connectionFunctions;
