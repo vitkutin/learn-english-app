@@ -35,12 +35,26 @@ h1 {
   height: 20px;
   width: 160px;
   padding: 10px;
-  background-color: rgb(84, 121, 224);
-  margin: 10px;
+  padding-bottom: 50px;
+  background-color: rgb(120, 150, 233);
+  margin-top: 40px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 10px;
   border-radius: 10px;
-  color: aliceblue;
+  color: rgb(255, 255, 255);
+}
+
+.item-container-mod {
+  margin: 10px;
+  position: relative;
+  height: 20px;
+  width: 160px;
+  padding: 10px;
+  background-color: rgb(120, 150, 233);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 10px;
+  border-radius: 10px;
+  color: rgb(255, 255, 255);
 }
 
 .item-list {
@@ -57,6 +71,18 @@ h1 {
   top: 10px;
   left: 30px;
   display: inline-block;
+  color: rgb(255, 255, 255);
+  border-radius: 2px;
+}
+
+#score {
+  font-size: 10px;
+  position: absolute;
+  top: -60px;
+  left: 45px;
+  display: inline-block;
+  padding: 10px;
+  background-color: #b2b9c5;
   color: rgb(255, 255, 255);
   border-radius: 2px;
 }
@@ -85,10 +111,9 @@ h1 {
 #submit-mod {
   height: 21px;
   width: 90px;
-  background-color: #144b94;
+  background-color: #23b9a0;
   border: none;
   color: white;
-  border-radius: 2px;
 }
 ::placeholder {
   color: rgba(73, 93, 129, 0.603);
@@ -98,10 +123,10 @@ h1 {
   position: absolute;
   height: 30px;
   width: 90px;
-  background-color: #144b94;
+  background-color: #23b9a0;
   border: none;
   color: white;
-  bottom: -100px;
+  bottom: 10px;
   left: 43px;
   display: inline-block;
   border-radius: 2px;
@@ -109,12 +134,30 @@ h1 {
 
 #submit:hover,
 #submit-mod:hover {
+  background-color: #23b950;
+}
+
+#nextBtn:hover {
   background-color: rgb(69, 165, 248);
 }
 
 #buttons {
   bottom: 0;
   right: 0;
+}
+
+#nextBtn {
+  position: absolute;
+  bottom: 100px;
+  right: 383px;
+  height: 30px;
+  width: 90px;
+  background-color: #3469ad;
+  border: none;
+  color: white;
+  display: inline-block;
+  border-radius: 2px;
+  font-size: 10px;
 }
 
 #taskBtn {
@@ -128,5 +171,6 @@ h1 {
 }
 
 .item-list-mod {
-  margin-inline: 35%;
+  margin-top: 30px;
+  margin-inline: 325px;
 }
