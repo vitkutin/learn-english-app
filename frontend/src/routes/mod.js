@@ -50,12 +50,11 @@ export default function Mod() {
 
   //Edits task description and adds modified task to the end of the list
   function handleEdit(e) {
-    let edited = window.prompt("Edit description");
+    let editedFinnish = window.prompt("In finnish");
+    let editedEnglish = window.prompt("In english");
     let editedItem = {
-      id: uuidv4(),
-      description: edited,
-      date: e.date,
-      tag: e.tag,
+      in_finnish: editedFinnish,
+      in_english: editedEnglish,
     };
     const newList = list.filter((el) => el.id !== e.id);
     setList([...newList, editedItem]);
@@ -100,7 +99,7 @@ export default function Mod() {
       {/* List */}
       <div className="item-list-mod">
         {list.map((e) => (
-          <div className="item-container">
+          <div className="item-container-mod">
             {/* Elements */}
             <div>
               <span id="span-desc">

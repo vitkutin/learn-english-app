@@ -4,19 +4,16 @@ import React, { useState, useEffect } from "react";
 function User() {
   let [list, setList] = useState([]);
 
-  //get random id from database
+  //Show a random exercise
   function random() {
     fetch("http://localhost:8080/vocabulary/ids")
       .then((res) => res.json())
-      .then((data) => console.log(data.id));
+      .then((data) => {
+        fetch(`http://localhost:8080/vocabulary/${data.id}`)
+          .then((response) => response.json())
+          .then((data) => setList(data));
+      });
   }
-
-  //Show a random exercise
-  useEffect(() => {
-    fetch(`http://localhost:8080/vocabulary/5`)
-      .then((response) => response.json())
-      .then((data) => setList(data));
-  }, []);
 
   //Clears textfield after input
   const initialValues = {
@@ -42,12 +39,17 @@ function User() {
     setInput(initialValues);
   }
 
+  //Tee lista jossa on sanaparit, jotka on jo submitattu.
+  //Tarkista onko listassa yhtä paljon sanapareja kuin tietokannassa,
+  //Kun on, näytä teksti "Suoritettu" + score
+
   return (
     <div className="item-list">
       {list.map((e) => (
         <div className="item-container">
           {/* Elements */}
           <div>
+            <span id="score">{"Score: 0 pts"}</span>
             <span id="fin">{e.in_finnish}</span>
             <form onSubmit={handleSubmit}>
               <input
@@ -64,6 +66,11 @@ function User() {
           </div>
         </div>
       ))}
+      <div>
+        <button id="nextBtn" onClick={random}>
+          Next exercise
+        </button>
+      </div>
     </div>
   );
 }
