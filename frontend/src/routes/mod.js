@@ -1,5 +1,7 @@
-import { FaRegTrashAlt, FaEdit } from "react-icons/fa";
-import { v4 as uuidv4 } from "uuid";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import React, { useState, useEffect } from "react";
 
 export default function Mod() {
@@ -46,6 +48,7 @@ export default function Mod() {
     fetch("http://localhost:8080/vocabulary/", options).then((res) =>
       console.log(res)
     );
+    setInput(initialValues);
   }
 
   //Edits task description and adds modified task to the end of the list
@@ -76,23 +79,27 @@ export default function Mod() {
       {/* Forms for date, description and tag */}
       <div className="form-container">
         <form onSubmit={handleSubmit}>
-          <input
+          <TextField
+            size="small"
+            variant="outlined"
             id="fi-mod"
             name="finnish"
             value={input.finnish}
             onChange={handleInputChange}
             placeholder="In finnish"
           />
-          <input
+          <TextField
+            size="small"
+            variant="outlined"
             id="en-mod"
             name="english"
             value={input.english}
             onChange={handleInputChange}
             placeholder="In english"
           />
-          <button id="submit-mod" type="submit">
-            Add exercise
-          </button>
+          <Button variant="contained" id="submit-mod" type="submit">
+            ADD
+          </Button>
         </form>
       </div>
 
@@ -110,11 +117,17 @@ export default function Mod() {
               <span id="buttons">
                 {/* DELETE BUTTON */}
                 <button id="taskBtn">
-                  <FaRegTrashAlt onClick={() => handleDelete(e)} />
+                  <DeleteIcon
+                    fontSize="small"
+                    onClick={() => handleDelete(e)}
+                  />
                 </button>
                 {/* EDIT BUTTON */}
                 <button id="taskBtn">
-                  <FaEdit onClick={() => handleEdit(e)} />
+                  <BorderColorIcon
+                    fontSize="small"
+                    onClick={() => handleEdit(e)}
+                  />
                 </button>
               </span>
             </div>
