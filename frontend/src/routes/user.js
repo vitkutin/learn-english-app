@@ -1,8 +1,11 @@
 /* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 
 function User() {
   let [list, setList] = useState([]);
+  var [score, setScore] = useState(0);
 
   //Show a random exercise
   function random() {
@@ -35,7 +38,6 @@ function User() {
     e.preventDefault();
     const answer = input.answer;
     console.log(answer);
-
     setInput(initialValues);
   }
 
@@ -44,32 +46,45 @@ function User() {
   //Kun on, näytä teksti "Suoritettu" + score
 
   return (
-    <div className="item-list">
-      {list.map((e) => (
-        <div className="item-container">
-          {/* Elements */}
-          <div>
-            <span id="score">{"Score: 0 pts"}</span>
-            <span id="fin">{e.in_finnish}</span>
-            <form onSubmit={handleSubmit}>
-              <input
-                id="en"
-                name="answer"
-                value={input.answer}
-                onChange={handleInputChange}
-                placeholder="In english..."
-              />
-              <button id="submit" type="submit">
-                Submit
-              </button>
-            </form>
+    <div>
+      <div className="item-list">
+        {list.map((e) => (
+          <div className="item-container">
+            {/* Elements */}
+
+            <div>
+              <span id="score">
+                {"Score: "} {score}
+              </span>
+
+              <span id="fin">{e.in_finnish}</span>
+              <form onSubmit={handleSubmit}>
+                <input
+                  id="en"
+                  name="answer"
+                  value={input.answer}
+                  onChange={handleInputChange}
+                  placeholder="In english..."
+                />
+                <Button
+                  variant="contained"
+                  id="submit"
+                  type="submit"
+                  onClick={() => {
+                    if (input.answer === e.in_english) {
+                      setScore(score + 1);
+                    }
+                  }}
+                >
+                  Submit
+                </Button>
+              </form>
+            </div>
           </div>
-        </div>
-      ))}
-      <div>
-        <button id="nextBtn" onClick={random}>
+        ))}
+        <Button variant="contained" id="nextBtn" onClick={random}>
           Next exercise
-        </button>
+        </Button>
       </div>
     </div>
   );

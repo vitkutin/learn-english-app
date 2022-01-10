@@ -61,7 +61,7 @@ h1 {
   display: inline-block;
   text-align: left;
   padding: 10px;
-  margin-inline: 200px;
+  margin-inline: 280px;
   margin-top: 40px;
 }
 
@@ -88,31 +88,28 @@ h1 {
 }
 
 #en {
-  position: absolute;
+  position: relative;
+  left: 80px;
   width: 70px;
-  height: 17px;
-  box-sizing: border-box;
-  border: 1px solid rgba(204, 204, 204, 0);
-  border-width: 1px;
-  top: 11px;
-  right: 15px;
-  display: inline-block;
-  background-color: rgb(255, 255, 255);
+  height: 13px;
 }
 
 #en-mod {
   width: 90px;
+  height: 6px;
 }
 
 #fi-mod {
   width: 90px;
+  height: 6px;
 }
 
 #submit-mod {
+  margin-inline: 5px;
+  font-size: 11px;
   height: 21px;
   width: 90px;
   background-color: #23b9a0;
-  border: none;
   color: white;
 }
 ::placeholder {
@@ -121,20 +118,16 @@ h1 {
 
 #submit {
   position: absolute;
-  height: 30px;
-  width: 90px;
-  background-color: #23b9a0;
-  border: none;
-  color: white;
+  background-color: #60b845;
+  color: rgb(255, 255, 255);
   bottom: 10px;
   left: 43px;
-  display: inline-block;
-  border-radius: 2px;
+  height: 25px;
 }
 
 #submit:hover,
 #submit-mod:hover {
-  background-color: #23b950;
+  background-color: #69ca5c;
 }
 
 #nextBtn:hover {
@@ -148,20 +141,12 @@ h1 {
 
 #nextBtn {
   position: absolute;
-  bottom: 100px;
-  right: 383px;
-  height: 30px;
-  width: 90px;
-  background-color: #3469ad;
-  border: none;
-  color: white;
-  display: inline-block;
-  border-radius: 2px;
-  font-size: 10px;
+  left: 40%;
+  top: 70%;
+  background-color: rgb(57, 78, 196);
 }
 
 #taskBtn {
-  font-size: 9px;
   padding: 0px;
   border: none;
   float: right;
@@ -171,6 +156,8 @@ h1 {
 }
 
 .item-list-mod {
+  top: 100px;
+  left: 38%;
+  position: absolute;
   margin-top: 30px;
-  margin-inline: 325px;
 }
