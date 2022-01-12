@@ -4,7 +4,7 @@ function App() {
   return (
     <div>
       <nav>
-        <Link to="/user">USER</Link>
+        <Link to="/user">QUIZ</Link>
         <Link to="/mod">MOD</Link>
       </nav>
       <Outlet />
