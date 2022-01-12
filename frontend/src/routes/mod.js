@@ -1,11 +1,12 @@
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 import React, { useState, useEffect } from "react";
 
 export default function Mod() {
-  //Clears textfield after input
+  let [list, setList] = useState([]);
+
+  // Clears textfield after input
   const initialValues = {
     finnish: "",
     english: "",
@@ -13,16 +14,14 @@ export default function Mod() {
 
   const [input, setInput] = useState(initialValues);
 
-  let [list, setList] = useState([]);
-
-  //Show exercises
+  // Shows all exercises from database
   useEffect(() => {
     fetch(`http://localhost:8080/vocabulary/`)
       .then((response) => response.json())
       .then((data) => setList(data));
   }, []);
 
-  //Updates input state
+  // Updates input state
   function handleInputChange(e) {
     const { name, value } = e.target;
     setInput({
@@ -31,7 +30,7 @@ export default function Mod() {
     });
   }
 
-  //Creates new list item and updates list on submit
+  // Creates new item from input, adds it to the list
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -40,6 +39,7 @@ export default function Mod() {
       in_english: input.english,
     };
     setList([...list, newItem]);
+    // Sends item to database
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -51,7 +51,8 @@ export default function Mod() {
     setInput(initialValues);
   }
 
-  //Edits task description and adds modified task to the end of the list
+  // Edits exercise and adds updated version to the end of the list
+  // And updates database
   function handleEdit(e) {
     let editedFinnish = window.prompt("In finnish");
     let editedEnglish = window.prompt("In english");
@@ -59,11 +60,27 @@ export default function Mod() {
       in_finnish: editedFinnish,
       in_english: editedEnglish,
     };
-    const newList = list.filter((el) => el.id !== e.id);
-    setList([...newList, editedItem]);
+    const options = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editedItem),
+    };
+    fetch(`http://localhost:8080/vocabulary/` + e.id, {
+      method: "delete",
+    })
+      .then((res) => res.text())
+      .then((res) => console.log(res))
+      .then(() => {
+        fetch("http://localhost:8080/vocabulary/", options)
+          .then((res) => console.log(res))
+          .then(() => {
+            const newList = list.filter((el) => el.id !== e.id);
+            setList([...newList, editedItem]);
+          });
+      });
   }
 
-  //Filters element from list by comparing id's
+  //Filters item from database and list by comparing id's
   function handleDelete(e) {
     fetch(`http://localhost:8080/vocabulary/` + e.id, {
       method: "delete",
@@ -76,26 +93,22 @@ export default function Mod() {
   return (
     <div>
       <h1>EXERCISES</h1>
-      {/* Forms for date, description and tag */}
+      {/* Forms for adding a new exercise*/}
       <div className="form-container">
         <form onSubmit={handleSubmit}>
-          <TextField
-            size="small"
-            variant="outlined"
+          <input
             id="fi-mod"
             name="finnish"
             value={input.finnish}
             onChange={handleInputChange}
-            placeholder="In finnish"
+            placeholder="In finnish..."
           />
-          <TextField
-            size="small"
-            variant="outlined"
+          <input
             id="en-mod"
             name="english"
             value={input.english}
             onChange={handleInputChange}
-            placeholder="In english"
+            placeholder="In english..."
           />
           <Button variant="contained" id="submit-mod" type="submit">
             ADD
@@ -103,36 +116,37 @@ export default function Mod() {
         </form>
       </div>
 
-      {/* List */}
-      <div className="item-list-mod">
-        {list.map((e) => (
-          <div className="item-container-mod">
-            {/* Elements */}
-            <div>
-              <span id="span-desc">
-                {" "}
-                {e.in_finnish} {" = "}{" "}
-              </span>
-              <span id="span-date"> {e.in_english} </span>
-              <span id="buttons">
-                {/* DELETE BUTTON */}
-                <button id="taskBtn">
-                  <DeleteIcon
-                    fontSize="small"
-                    onClick={() => handleDelete(e)}
-                  />
-                </button>
-                {/* EDIT BUTTON */}
-                <button id="taskBtn">
-                  <BorderColorIcon
-                    fontSize="small"
-                    onClick={() => handleEdit(e)}
-                  />
-                </button>
-              </span>
+      <div className="content">
+        {/* LIST */}
+        <div className="item-list-mod">
+          {list.map((e) => (
+            <div className="exercise-box-mod">
+              {/* ELEMENTS */}
+              <div>
+                <span>
+                  {e.in_finnish} {" = "}
+                </span>
+                <span> {e.in_english} </span>
+                <span id="buttons">
+                  {/* DELETE BUTTON */}
+                  <button id="delete-button">
+                    <DeleteIcon
+                      fontSize="small"
+                      onClick={() => handleDelete(e)}
+                    />
+                  </button>
+                  {/* EDIT BUTTON */}
+                  <button id="edit-button">
+                    <BorderColorIcon
+                      fontSize="small"
+                      onClick={() => handleEdit(e)}
+                    />
+                  </button>
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );

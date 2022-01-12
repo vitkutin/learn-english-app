@@ -1,14 +1,19 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
 
 function User() {
   let [list, setList] = useState([]);
   var [score, setScore] = useState(0);
 
+  //Clears textfield after input
+  const initialValues = {
+    answer: "",
+  };
+
+  const [input, setInput] = useState(initialValues);
+
   //Show a random exercise
-  function random() {
+  function showRandomExercise() {
     fetch("http://localhost:8080/vocabulary/ids")
       .then((res) => res.json())
       .then((data) => {
@@ -17,13 +22,6 @@ function User() {
           .then((data) => setList(data));
       });
   }
-
-  //Clears textfield after input
-  const initialValues = {
-    answer: "",
-  };
-
-  const [input, setInput] = useState(initialValues);
 
   //Updates input state
   function handleInputChange(e) {
@@ -36,8 +34,6 @@ function User() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    const answer = input.answer;
-    console.log(answer);
     setInput(initialValues);
   }
 
@@ -46,21 +42,19 @@ function User() {
   //Kun on, näytä teksti "Suoritettu" + score
 
   return (
-    <div>
+    <div className="content">
       <div className="item-list">
         {list.map((e) => (
-          <div className="item-container">
+          <div className="exercise-box">
+            <span id="score">
+              {"Score: "} {score}
+            </span>
             {/* Elements */}
-
             <div>
-              <span id="score">
-                {"Score: "} {score}
-              </span>
-
               <span id="fin">{e.in_finnish}</span>
               <form onSubmit={handleSubmit}>
                 <input
-                  id="en"
+                  id="answer"
                   name="answer"
                   value={input.answer}
                   onChange={handleInputChange}
@@ -73,17 +67,36 @@ function User() {
                   onClick={() => {
                     if (input.answer === e.in_english) {
                       setScore(score + 1);
+                      var x = document.getElementById("error-msg");
+                      x.style.display = "none";
+                      showRandomExercise();
+                    } else {
+                      var y = document.getElementById("error-msg");
+                      y.style.display = "block";
                     }
                   }}
                 >
                   Submit
                 </Button>
               </form>
+              <span id="error-msg">{"Try again!"}</span>
             </div>
           </div>
         ))}
-        <Button variant="contained" id="nextBtn" onClick={random}>
-          Next exercise
+        <Button
+          variant="contained"
+          id="next-button"
+          onClick={() => {
+            var x = document.getElementById("next-button");
+            if (x.style.display === "none") {
+              x.style.display = "block";
+            } else {
+              x.style.display = "none";
+            }
+            showRandomExercise();
+          }}
+        >
+          BEGIN
         </Button>
       </div>
     </div>
