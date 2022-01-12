@@ -1,12 +1,14 @@
+/* GENERAL */
+
 body {
   margin: 0;
   text-align: center;
-  background: rgb(255, 255, 255);
+  background: rgb(231, 245, 247);
 }
 
 nav {
   background: linear-gradient(90deg, rgb(34, 179, 123), rgb(101, 146, 231));
-  padding: 10px;
+  padding: 20px;
 }
 
 a {
@@ -14,11 +16,12 @@ a {
   text-decoration: none;
   color: rgb(255, 255, 255);
   font-family: fantasy;
+  font-size: 20px;
 }
 
 a:hover {
   background-color: rgba(10, 16, 70, 0.4);
-  padding: 10px;
+  padding: 20px;
   padding-inline: 10%;
 }
 
@@ -26,138 +29,152 @@ h1 {
   font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
   font-size: 20px;
-  color: rgb(104, 105, 150);
+  color: rgba(10, 83, 88, 0.705);
   margin-inline: 150px;
 }
 
-.item-container {
-  position: relative;
-  height: 20px;
-  width: 160px;
-  padding: 10px;
-  padding-bottom: 50px;
-  background-color: rgb(120, 150, 233);
-  margin-top: 40px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 10px;
-  border-radius: 10px;
-  color: rgb(255, 255, 255);
+/* USER */
+
+.content {
+  display: flex;
+  justify-content: center;
 }
 
-.item-container-mod {
-  margin: 10px;
+.exercise-box {
+  margin-top: 20px;
   position: relative;
-  height: 20px;
-  width: 160px;
+  height: 150px;
+  width: 360px;
   padding: 10px;
-  background-color: rgb(120, 150, 233);
+  padding-bottom: 50px;
+  background-color: rgb(255, 255, 255);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   font-size: 10px;
-  border-radius: 10px;
-  color: rgb(255, 255, 255);
+  border-radius: 2px;
+  box-shadow: 2px 2px 10px rgba(73, 73, 73, 0.363);
 }
 
 .item-list {
-  display: inline-block;
-  text-align: left;
-  padding: 10px;
-  margin-inline: 280px;
-  margin-top: 40px;
-}
-
-#fin {
-  font-size: 15px;
-  position: absolute;
-  top: 10px;
-  left: 30px;
-  display: inline-block;
-  color: rgb(255, 255, 255);
-  border-radius: 2px;
+  margin: 10px;
 }
 
 #score {
-  font-size: 10px;
-  position: absolute;
-  top: -60px;
-  left: 45px;
-  display: inline-block;
-  padding: 10px;
-  background-color: #b2b9c5;
-  color: rgb(255, 255, 255);
-  border-radius: 2px;
-}
-
-#en {
   position: relative;
-  left: 80px;
-  width: 70px;
-  height: 13px;
+  top: 15px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 13px;
+  padding: 10px;
+  color: rgb(60, 138, 64);
 }
 
-#en-mod {
+#answer {
+  border: none;
+  border-bottom: 1px solid rgba(34, 34, 34, 0.315);
+  border-radius: 1px;
+  padding: 3px;
+  position: relative;
+  top: 65px;
+  left: 65px;
   width: 90px;
-  height: 6px;
+  height: 17px;
 }
 
-#fi-mod {
-  width: 90px;
-  height: 6px;
-}
-
-#submit-mod {
-  margin-inline: 5px;
-  font-size: 11px;
-  height: 21px;
-  width: 90px;
-  background-color: #23b9a0;
-  color: white;
-}
-::placeholder {
-  color: rgba(73, 93, 129, 0.603);
+#fin {
+  font-size: 17px;
+  position: absolute;
+  top: 90px;
+  left: 120px;
+  display: inline-block;
+  color: rgb(66, 66, 66);
 }
 
 #submit {
   position: absolute;
-  background-color: #60b845;
+  background-color: #6bc94e;
   color: rgb(255, 255, 255);
-  bottom: 10px;
-  left: 43px;
+  bottom: 20px;
+  left: 148px;
   height: 25px;
+}
+
+#next-button {
+  position: relative;
+  top: 90px;
+  background-color: #23b9a0;
+}
+
+#next-button:hover {
+  background-color: rgb(113, 219, 210);
+}
+
+#error-msg {
+  position: relative;
+  top: 5px;
+  color: #b9232a;
+  display: none;
+}
+
+/* MOD */
+
+.exercise-box-mod {
+  position: relative;
+  width: 190px;
+  padding: 20px;
+  background-color: rgb(255, 255, 255);
+  margin: 10px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 13px;
+  border-radius: 2px;
+  box-shadow: 2px 2px 10px rgba(73, 73, 73, 0.363);
+}
+
+.item-list-mod {
+  margin-top: 20px;
+}
+
+#en-mod,
+#fi-mod {
+  margin: 1px;
+  border: none;
+  border-bottom: 1px solid rgba(34, 34, 34, 0.315);
+  border-radius: 1px;
+  padding: 3px;
+  width: 100px;
+  height: 20px;
+}
+
+#submit-mod {
+  margin-inline: 2px;
+  font-size: 11px;
+  height: 23px;
+  width: 90px;
+  background-color: #6bc94e;
+  color: white;
+}
+
+::placeholder {
+  font-size: 14px;
+  color: rgba(96, 97, 99, 0.603);
 }
 
 #submit:hover,
 #submit-mod:hover {
-  background-color: #69ca5c;
+  background-color: #8de282;
 }
 
-#nextBtn:hover {
-  background-color: rgb(69, 165, 248);
-}
-
-#buttons {
-  bottom: 0;
-  right: 0;
-}
-
-#nextBtn {
-  position: absolute;
-  left: 40%;
-  top: 70%;
-  background-color: rgb(57, 78, 196);
-}
-
-#taskBtn {
+#delete-button,
+#edit-button {
   padding: 0px;
   border: none;
   float: right;
-  margin: 4px;
+  margin-inline: 5px;
   background-color: transparent;
-  color: aliceblue;
 }
 
-.item-list-mod {
-  top: 100px;
-  left: 38%;
-  position: absolute;
-  margin-top: 30px;
+#delete-button {
+  color: rgb(238, 129, 129);
+}
+
+#edit-button {
+  color: rgb(113, 173, 233);
 }
