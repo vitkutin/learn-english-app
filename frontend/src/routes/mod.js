@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 export default function Mod() {
   let [list, setList] = useState([]);
 
-  // Clears textfield after input
+  // Clear textfield after input
   const initialValues = {
     finnish: "",
     english: "",
@@ -14,14 +14,14 @@ export default function Mod() {
 
   const [input, setInput] = useState(initialValues);
 
-  // Shows all exercises from database
+  // Fetch all exercises from database
   useEffect(() => {
     fetch(`http://localhost:8080/vocabulary/`)
       .then((response) => response.json())
       .then((data) => setList(data));
   }, []);
 
-  // Updates input state
+  // Update input state
   function handleInputChange(e) {
     const { name, value } = e.target;
     setInput({
@@ -30,7 +30,7 @@ export default function Mod() {
     });
   }
 
-  // Creates new item from input, adds it to the list
+  // Create new exercise from input and add to the list
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -39,7 +39,7 @@ export default function Mod() {
       in_english: input.english,
     };
     setList([...list, newItem]);
-    // Sends item to database
+    // Send exercise to database
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -51,8 +51,7 @@ export default function Mod() {
     setInput(initialValues);
   }
 
-  // Edits exercise and adds updated version to the end of the list
-  // And updates database
+  // Ask user for updated details
   function handleEdit(e) {
     let editedFinnish = window.prompt("In finnish");
     let editedEnglish = window.prompt("In english");
@@ -60,17 +59,20 @@ export default function Mod() {
       in_finnish: editedFinnish,
       in_english: editedEnglish,
     };
+    // Post updated exercise to database
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editedItem),
     };
+    // Delete outdated version of exercise
     fetch(`http://localhost:8080/vocabulary/` + e.id, {
       method: "delete",
     })
       .then((res) => res.text())
       .then((res) => console.log(res))
       .then(() => {
+        // Update visible list
         fetch("http://localhost:8080/vocabulary/", options)
           .then((res) => console.log(res))
           .then(() => {
@@ -80,7 +82,7 @@ export default function Mod() {
       });
   }
 
-  //Filters item from database and list by comparing id's
+  //Filter item from database and visible list by comparing id's
   function handleDelete(e) {
     fetch(`http://localhost:8080/vocabulary/` + e.id, {
       method: "delete",
@@ -93,9 +95,9 @@ export default function Mod() {
   return (
     <div>
       <h1>EXERCISES</h1>
-      {/* Forms for adding a new exercise*/}
       <div className="form-container">
         <form onSubmit={handleSubmit}>
+          {/* New exercise in finnish */}
           <input
             id="fi-mod"
             name="finnish"
@@ -103,6 +105,7 @@ export default function Mod() {
             onChange={handleInputChange}
             placeholder="In finnish..."
           />
+          {/* New exercise in english */}
           <input
             id="en-mod"
             name="english"
@@ -110,6 +113,7 @@ export default function Mod() {
             onChange={handleInputChange}
             placeholder="In english..."
           />
+          {/* Submit */}
           <Button variant="contained" id="submit-mod" type="submit">
             ADD
           </Button>
@@ -117,25 +121,24 @@ export default function Mod() {
       </div>
 
       <div className="content">
-        {/* LIST */}
         <div className="item-list-mod">
           {list.map((e) => (
             <div className="exercise-box-mod">
-              {/* ELEMENTS */}
+              {/* Exercises */}
               <div>
                 <span>
                   {e.in_finnish} {" = "}
                 </span>
                 <span> {e.in_english} </span>
                 <span id="buttons">
-                  {/* DELETE BUTTON */}
+                  {/* Delete button */}
                   <button id="delete-button">
                     <DeleteIcon
                       fontSize="small"
                       onClick={() => handleDelete(e)}
                     />
                   </button>
-                  {/* EDIT BUTTON */}
+                  {/* Edit button */}
                   <button id="edit-button">
                     <BorderColorIcon
                       fontSize="small"
