@@ -1,12 +1,15 @@
 const mysql = require("mysql");
 require("dotenv").config();
 
-const connection = mysql.createConnection({
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_DB,
-});
+let config = {
+  host: process.env.host,
+  user: process.env.user,
+  password: process.env.password,
+  database: process.env.database,
+  connectionLimit: 10,
+};
+
+var pool = mysql.createPool(config);
 
 let connectionFunctions = {
   //Connect to database
@@ -14,7 +17,7 @@ let connectionFunctions = {
     if (err) {
       console.log(err);
     } else {
-      connection.connect();
+      pool.connect();
     }
   },
 
@@ -23,14 +26,14 @@ let connectionFunctions = {
     if (err) {
       console.log(err);
     } else {
-      connection.end();
+      pool.end();
     }
   },
 
   //Show all items in database
   findAll: () =>
     new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM vocabulary", (err, result) => {
+      pool.query("SELECT * FROM vocabulary", (err, result) => {
         if (err) {
           reject(err);
         } else {
@@ -42,52 +45,42 @@ let connectionFunctions = {
   //Find an item from database by id
   findById: (id) =>
     new Promise((resolve, reject) => {
-      connection.query(
-        "SELECT * FROM vocabulary WHERE id = " + id,
-        (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
+      pool.query("SELECT * FROM vocabulary WHERE id = " + id, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
         }
-      );
+      });
     }),
 
   //Delete an item from database by id
   deleteById: (id) =>
     new Promise((resolve, reject) => {
-      connection.query(
-        "DELETE FROM vocabulary WHERE id = " + id,
-        (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
+      pool.query("DELETE FROM vocabulary WHERE id = " + id, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
         }
-      );
+      });
     }),
 
   //Save new item into database
   save: (newItem) =>
     new Promise((resolve, reject) => {
-      connection.query(
-        "INSERT INTO vocabulary SET ?",
-        newItem,
-        (err, result) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(result);
-          }
+      pool.query("INSERT INTO vocabulary SET ?", newItem, (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
         }
-      );
+      });
     }),
 
   findIds: () =>
     new Promise((resolve, reject) => {
-      connection.query("SELECT id FROM vocabulary", (err, result) => {
+      pool.query("SELECT id FROM vocabulary", (err, result) => {
         if (err) {
           reject(err);
         } else {
