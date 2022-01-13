@@ -97,13 +97,13 @@ h1 {
   height: 25px;
 }
 
-#next-button {
+#start-button {
   position: relative;
   top: 90px;
   background-color: #23b9a0;
 }
 
-#next-button:hover {
+#start-button:hover {
   background-color: rgb(113, 219, 210);
 }
 
@@ -111,6 +111,13 @@ h1 {
   position: relative;
   top: 5px;
   color: #b9232a;
+  display: none;
+}
+
+#end-msg {
+  position: relative;
+  top: 85px;
+  color: #0681a7;
   display: none;
 }
 
