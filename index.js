@@ -2,7 +2,8 @@ const express = require("express");
 const app = express();
 var cors = require("cors");
 const connection = require("./crudrepository.js");
-const server = app.listen(8080, () => {
+const port = process.env.PORT || 8080;
+const server = app.listen(port, () => {
   console.log(`Listening in port ${server.address().port}`);
 });
 
@@ -25,12 +26,13 @@ app.get("/vocabulary", async (req, res) => {
   }
 });
 
-//Fetch all id's from database and send a random id as response
+//Fetch all id's from database
 app.get("/vocabulary/ids", async (req, res) => {
   try {
     let idList = await connection.findIds();
-    let randomId = idList[Math.floor(Math.random() * idList.length)];
-    res.send(randomId);
+    res.send(idList);
+    //let randomId = idList[Math.floor(Math.random() * idList.length)];
+    //res.send(randomId);
   } catch (err) {
     console.log(err);
   }

@@ -2,28 +2,50 @@ import React, { useState } from "react";
 import Button from "@mui/material/Button";
 
 function User() {
-  let [list, setList] = useState([]);
+  let [exerciseList, setExerciseList] = useState([]);
   var [score, setScore] = useState(0);
+  // Index for keeping track of done exercises
+  var [index, setIndex] = useState(0);
 
-  //Clears textfield after input
+  // Clear textfield after input
   const initialValues = {
     answer: "",
   };
 
   const [input, setInput] = useState(initialValues);
 
-  //Show a random exercise
-  function showRandomExercise() {
+  // Fetch all exercise id's from database
+  function showNextExercise() {
     fetch("http://localhost:8080/vocabulary/ids")
       .then((res) => res.json())
       .then((data) => {
-        fetch(`http://localhost:8080/vocabulary/${data.id}`)
-          .then((response) => response.json())
-          .then((data) => setList(data));
+        // If there are no more exercises in the list, display
+        // end message and score
+        try {
+          if (index >= data.length) {
+            // Hide asked word
+            var fin = document.getElementById("fin");
+            fin.style.display = "none";
+            // Hide answer form
+            var form = document.getElementById("form");
+            form.style.display = "none";
+            // Show end msg instead
+            var end = document.getElementById("end-msg");
+            end.style.display = "block";
+          } else {
+            // Fetch an exercise from database by index and id
+            setIndex(index + 1);
+            fetch(`http://localhost:8080/vocabulary/${data[index].id}`)
+              .then((response) => response.json())
+              .then((data) => setExerciseList(data));
+          }
+        } catch (err) {
+          console.log(err);
+        }
       });
   }
 
-  //Updates input state
+  //Update input state
   function handleInputChange(e) {
     const { name, value } = e.target;
     setInput({
@@ -32,27 +54,27 @@ function User() {
     });
   }
 
+  //Reset inputs after submitting
   function handleSubmit(e) {
     e.preventDefault();
     setInput(initialValues);
   }
 
-  //Tee lista jossa on sanaparit, jotka on jo submitattu.
-  //Tarkista onko listassa yhtä paljon sanapareja kuin tietokannassa,
-  //Kun on, näytä teksti "Suoritettu" + score
-
   return (
+    //
     <div className="content">
       <div className="item-list">
-        {list.map((e) => (
+        {exerciseList.map((e) => (
           <div className="exercise-box">
+            {/* Score */}
             <span id="score">
               {"Score: "} {score}
             </span>
-            {/* Elements */}
             <div>
+              {/* Exercise word */}
               <span id="fin">{e.in_finnish}</span>
-              <form onSubmit={handleSubmit}>
+              {/* Answer form */}
+              <form id="form" onSubmit={handleSubmit}>
                 <input
                   id="answer"
                   name="answer"
@@ -60,40 +82,54 @@ function User() {
                   onChange={handleInputChange}
                   placeholder="In english..."
                 />
+                {/* Submit button */}
                 <Button
                   variant="contained"
                   id="submit"
                   type="submit"
                   onClick={() => {
+                    // If the answer is correct, score goes up by one point and
+                    // error message will be hidden in case last answer was incorrect
                     if (input.answer === e.in_english) {
                       setScore(score + 1);
                       var x = document.getElementById("error-msg");
                       x.style.display = "none";
-                      showRandomExercise();
+                      showNextExercise();
                     } else {
+                      // If the answer was incorrect, show error message and
+                      // do not add a point to score
                       var y = document.getElementById("error-msg");
                       y.style.display = "block";
+                      showNextExercise();
                     }
                   }}
                 >
                   Submit
                 </Button>
               </form>
-              <span id="error-msg">{"Try again!"}</span>
+              {/* Ending message */}
+              <span id="end-msg">
+                {"Quiz end! You got "}
+                {score}
+                {" points!"}
+              </span>
+              {/* Error message */}
+              <span id="error-msg">{"Wrong answer, no point!"}</span>
             </div>
           </div>
         ))}
+        {/* Start button */}
         <Button
           variant="contained"
-          id="next-button"
+          id="start-button"
           onClick={() => {
-            var x = document.getElementById("next-button");
+            var x = document.getElementById("start-button");
             if (x.style.display === "none") {
               x.style.display = "block";
             } else {
               x.style.display = "none";
             }
-            showRandomExercise();
+            showNextExercise();
           }}
         >
           BEGIN
