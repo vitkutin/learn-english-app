@@ -16,7 +16,7 @@ function User() {
 
   // Fetch all exercise id's from database
   function showNextExercise() {
-    fetch("http://localhost:8080/vocabulary/ids")
+    fetch("/vocabulary/ids")
       .then((res) => res.json())
       .then((data) => {
         // If there are no more exercises in the list, display
@@ -35,7 +35,7 @@ function User() {
           } else {
             // Fetch an exercise from database by index and id
             setIndex(index + 1);
-            fetch(`http://localhost:8080/vocabulary/${data[index].id}`)
+            fetch(`/vocabulary/${data[index].id}`)
               .then((response) => response.json())
               .then((data) => setExerciseList(data));
           }
