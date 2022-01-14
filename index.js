@@ -1,11 +1,14 @@
 const express = require("express");
 const app = express();
 var cors = require("cors");
+const path = require("path");
 const connection = require("./crudrepository.js");
 const port = process.env.PORT || 8080;
 const server = app.listen(port, () => {
   console.log(`Listening in port ${server.address().port}`);
 });
+
+app.use(express.static(path.resolve(__dirname, "./frontend/build")));
 
 app.use(express.static("frontend/build"));
 
