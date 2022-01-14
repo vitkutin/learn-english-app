@@ -1,7 +1,7 @@
 # Learn English! -app
 
 This is my first full-stack project, an app for finnish children to practice english words with!
-The app is implemented with React and Node.js.
+The app is implemented with React and Express/Node.js.
 
 # Heroku
 
