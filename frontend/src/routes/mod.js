@@ -45,7 +45,9 @@ export default function Mod() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newItem),
     };
-    fetch("/vocabulary/", options).then((res) => console.log(res));
+    fetch("http://localhost:8080/vocabulary/", options).then((res) =>
+      console.log(res)
+    );
     setInput(initialValues);
   }
 
@@ -64,14 +66,14 @@ export default function Mod() {
       body: JSON.stringify(editedItem),
     };
     // Delete outdated version of exercise
-    fetch(`/vocabulary/` + e.id, {
+    fetch(`http://localhost:8080/vocabulary/` + e.id, {
       method: "delete",
     })
       .then((res) => res.text())
       .then((res) => console.log(res))
       .then(() => {
         // Update visible list
-        fetch("/vocabulary/", options)
+        fetch("http://localhost:8080/vocabulary/", options)
           .then((res) => console.log(res))
           .then(() => {
             const newList = list.filter((el) => el.id !== e.id);
@@ -82,7 +84,7 @@ export default function Mod() {
 
   //Filter item from database and visible list by comparing id's
   function handleDelete(e) {
-    fetch(`/vocabulary/` + e.id, {
+    fetch(`http://localhost:8080/vocabulary/` + e.id, {
       method: "delete",
     })
       .then((res) => res.text())
