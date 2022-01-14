@@ -37,5 +37,4 @@ To delete exercises, press the trash icon.
 To edit exercises, press the pencil icon. The app will give you a chance to edit the exercise by first asking the word in finnish and then in english.
 
 # Video demonstration (YouTube)
-
-https://www.youtube.com/watch?v=H2Kya769rQ0
+[![Alt](https://img.youtube.com/vi/H2Kya769rQ0/0.jpg)](https://www.youtube.com/watch?v=H2Kya769rQ0)
