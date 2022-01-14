@@ -132,14 +132,14 @@ export default function Mod() {
                   {/* Delete button */}
                   <button id="delete-button">
                     <DeleteIcon
-                      fontSize="small"
+                      fontSize="large"
                       onClick={() => handleDelete(e)}
                     />
                   </button>
                   {/* Edit button */}
                   <button id="edit-button">
                     <BorderColorIcon
-                      fontSize="small"
+                      fontSize="large"
                       onClick={() => handleEdit(e)}
                     />
                   </button>
