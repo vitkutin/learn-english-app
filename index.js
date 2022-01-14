@@ -9,17 +9,14 @@ const server = app.listen(port, () => {
 });
 
 app.use(express.static(path.resolve(__dirname, "./frontend/build")));
-
 app.use(express.static("frontend/build"));
-
 app.use(cors());
-
 app.use(express.json());
-
-//Serve static content in directory "public"
 app.use(express.static("public"));
 
-//Fetch all items from database
+/**
+ * Fetches all rows from the database.
+ */
 app.get("/vocabulary", async (req, res) => {
   try {
     let result = await connection.findAll();
@@ -29,19 +26,21 @@ app.get("/vocabulary", async (req, res) => {
   }
 });
 
-//Fetch all id's from database
+/**
+ * Fetches an array of current id's in the database.
+ */
 app.get("/vocabulary/ids", async (req, res) => {
   try {
     let idList = await connection.findIds();
     res.send(idList);
-    //let randomId = idList[Math.floor(Math.random() * idList.length)];
-    //res.send(randomId);
   } catch (err) {
     console.log(err);
   }
 });
 
-//Fetch an item from database by id
+/**
+ * Fetches a row from database that matches the searched id.
+ */
 app.get("/vocabulary/:id([0-9]+)", async (req, res) => {
   try {
     let result = await connection.findById(req.params.id);
@@ -51,7 +50,9 @@ app.get("/vocabulary/:id([0-9]+)", async (req, res) => {
   }
 });
 
-//Delete an item from database by id
+/**
+ * Deletes a row from database that matches the id.
+ */
 app.delete("/vocabulary/:id([0-9]+)", async (req, res) => {
   try {
     connection.deleteById(req.params.id);
@@ -61,7 +62,9 @@ app.delete("/vocabulary/:id([0-9]+)", async (req, res) => {
   }
 });
 
-//Save new item into database
+/**
+ * Saves a new row into the database.
+ */
 app.post("/vocabulary", async (req, res) => {
   try {
     await connection.save(req.body);

@@ -12,7 +12,10 @@ let config = {
 var pool = mysql.createPool(config);
 
 let connectionFunctions = {
-  //Connect to database
+  /**
+   *Connects to the database.
+   * @param {*} err - Possible error
+   */
   connect: (err) => {
     if (err) {
       console.log(err);
@@ -20,8 +23,10 @@ let connectionFunctions = {
       pool.connect();
     }
   },
-
-  //Close connection to database
+  /**
+   * Closes connection to the database.
+   * @param {*} err - Possible error
+   */
   close: (err) => {
     if (err) {
       console.log(err);
@@ -29,8 +34,10 @@ let connectionFunctions = {
       pool.end();
     }
   },
-
-  //Show all items in database
+  /**
+   * Sends a query to database.
+   * @returns Possible error or all rows in the database.
+   */
   findAll: () =>
     new Promise((resolve, reject) => {
       pool.query("SELECT * FROM vocabulary", (err, result) => {
@@ -42,7 +49,11 @@ let connectionFunctions = {
       });
     }),
 
-  //Find an item from database by id
+  /**
+   * Sends a query to database.
+   * @param {*} id - Id to be searched from the database.
+   * @returns Possible error or a row with a matching id.
+   */
   findById: (id) =>
     new Promise((resolve, reject) => {
       pool.query("SELECT * FROM vocabulary WHERE id = " + id, (err, result) => {
@@ -54,7 +65,11 @@ let connectionFunctions = {
       });
     }),
 
-  //Delete an item from database by id
+  /**
+   * Deletes a row from database.
+   * @param {*} id - Id to be deleted from the database.
+   * @returns Possible error or success message.
+   */
   deleteById: (id) =>
     new Promise((resolve, reject) => {
       pool.query("DELETE FROM vocabulary WHERE id = " + id, (err, result) => {
@@ -66,7 +81,11 @@ let connectionFunctions = {
       });
     }),
 
-  //Save new item into database
+  /**
+   * Saves new row to database.
+   * @param {*} newItem - Item to be saved to the database.
+   * @returns Possible error or success message.
+   */
   save: (newItem) =>
     new Promise((resolve, reject) => {
       pool.query("INSERT INTO vocabulary SET ?", newItem, (err, result) => {
@@ -78,6 +97,10 @@ let connectionFunctions = {
       });
     }),
 
+  /**
+   * Sends a query to the database.
+   * @returns Possible error or an array of the current id's in database.
+   */
   findIds: () =>
     new Promise((resolve, reject) => {
       pool.query("SELECT id FROM vocabulary", (err, result) => {

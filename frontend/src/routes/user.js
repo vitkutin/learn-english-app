@@ -1,26 +1,28 @@
+//@ts-check
 import React, { useState } from "react";
 import Button from "@mui/material/Button";
 
 function User() {
   let [exerciseList, setExerciseList] = useState([]);
   var [score, setScore] = useState(0);
-  // Index for keeping track of done exercises
   var [index, setIndex] = useState(0);
 
-  // Clear textfield after input
+  // Clears textfield after input
   const initialValues = {
     answer: "",
   };
-
   const [input, setInput] = useState(initialValues);
 
-  // Fetch all exercise id's from database
+  /**
+   * Fetches all exercise exercise id's from the database.
+   * Presents a new exercise as long as there is another id in the list.
+   * If there are no more exercises, presents the end message and score.
+   * @index keeps track of submitted exercises.
+   */
   function showNextExercise() {
     fetch("/vocabulary/ids")
       .then((res) => res.json())
       .then((data) => {
-        // If there are no more exercises in the list, display
-        // end message and score
         try {
           if (index >= data.length) {
             // Hide asked word
@@ -33,7 +35,6 @@ function User() {
             var end = document.getElementById("end-msg");
             end.style.display = "block";
           } else {
-            // Fetch an exercise from database by index and id
             setIndex(index + 1);
             fetch(`/vocabulary/${data[index].id}`)
               .then((response) => response.json())
@@ -45,7 +46,10 @@ function User() {
       });
   }
 
-  //Update input state
+  /**
+   * Allows user to write into the input area.
+   * @param {*} e - User input
+   */
   function handleInputChange(e) {
     const { name, value } = e.target;
     setInput({
@@ -54,14 +58,16 @@ function User() {
     });
   }
 
-  //Reset inputs after submitting
+  /**
+   * Clears input areas after submitting.
+   * @param {*} e - Event
+   */
   function handleSubmit(e) {
     e.preventDefault();
     setInput(initialValues);
   }
 
   return (
-    //
     <div className="content">
       <div className="item-list">
         {exerciseList.map((e) => (

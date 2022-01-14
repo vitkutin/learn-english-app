@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 export default function Mod() {
   let [list, setList] = useState([]);
 
-  // Clear textfield after input
+  // Clears textfield after input
   const initialValues = {
     finnish: "",
     english: "",
@@ -14,14 +14,20 @@ export default function Mod() {
 
   const [input, setInput] = useState(initialValues);
 
-  // Fetch all exercises from database
+  /**
+   * Fetches all rows from the database
+   * and displays them to the user as a list.
+   */
   useEffect(() => {
     fetch(`/vocabulary`)
       .then((response) => response.json())
       .then((data) => setList(data));
   }, []);
 
-  // Update input state
+  /**
+   * Allows user to write into the input area.
+   * @param {*} e - User input
+   */
   function handleInputChange(e) {
     const { name, value } = e.target;
     setInput({
@@ -30,7 +36,11 @@ export default function Mod() {
     });
   }
 
-  // Create new exercise from input and add to the list
+  /**
+   * Creates a new item from user input and saves it into
+   * the database.
+   * @param {*} e - Event
+   */
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -39,7 +49,7 @@ export default function Mod() {
       in_english: input.english,
     };
     setList([...list, newItem]);
-    // Send exercise to database
+    // Post into database
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -48,8 +58,11 @@ export default function Mod() {
     fetch("/vocabulary/", options).then((res) => console.log(res));
     setInput(initialValues);
   }
-
-  // Ask user for updated details
+  /**
+   * Creates a new item from user input, sends it to the database and
+   * deletes old item from database and visible list. Updates new item into the visible list.
+   * @param {*} e - Selected item
+   */
   function handleEdit(e) {
     let editedFinnish = window.prompt("In finnish");
     let editedEnglish = window.prompt("In english");
@@ -57,13 +70,13 @@ export default function Mod() {
       in_finnish: editedFinnish,
       in_english: editedEnglish,
     };
-    // Post updated exercise to database
+    // Post updated item to database
     const options = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(editedItem),
     };
-    // Delete outdated version of exercise
+    // Delete outdated version of the item
     fetch(`/vocabulary/` + e.id, {
       method: "delete",
     })
@@ -79,8 +92,10 @@ export default function Mod() {
           });
       });
   }
-
-  //Filter item from database and visible list by comparing id's
+  /**
+   * Removes item from the database and the visible list.
+   * @param {*} e - Selected item
+   */
   function handleDelete(e) {
     fetch(`/vocabulary/` + e.id, {
       method: "delete",
