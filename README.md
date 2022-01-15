@@ -5,7 +5,7 @@ The app is implemented with React and Express/Node.js.
 
 # Heroku
 
-https://ndhiha-learn-english.herokuapp.com/
+Check this app out on Heroku: https://ndhiha-learn-english.herokuapp.com/
 
 # Motivation
 
