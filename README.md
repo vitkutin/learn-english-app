@@ -14,9 +14,9 @@ This project was made as the final project work for a backend development course
 
 # Screenshots
 
-![Alt](https://github.com/vitkutin/learn-english-app/blob/main/1.gif)
-![Alt](https://github.com/vitkutin/learn-english-app/blob/main/2.gif)
-![Alt](https://github.com/vitkutin/learn-english-app/blob/main/3.gif)
+![Alt](https://github.com/vitkutin/learn-english-app/blob/main/gif1.gif)
+![Alt](https://github.com/vitkutin/learn-english-app/blob/main/gif2.gif)
+![Alt](https://github.com/vitkutin/learn-english-app/blob/main/gif3.gif)
 
 # How to use?
 
