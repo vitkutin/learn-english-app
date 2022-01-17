@@ -12,7 +12,7 @@ Check this app out on Heroku: https://ndhiha-learn-english.herokuapp.com/
 I study Business information systems at TAMK.
 This project was made as the final project work for a backend development course.
 
-# Screenshots
+# GIF demonstration
 
 ![Alt](https://github.com/vitkutin/learn-english-app/blob/main/gif1.gif)
 ![Alt](https://github.com/vitkutin/learn-english-app/blob/main/gif2.gif)
