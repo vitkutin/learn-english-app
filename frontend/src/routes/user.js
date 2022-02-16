@@ -115,7 +115,7 @@ function User() {
               </form>
               {/* Ending message */}
               <span id="end-msg">
-                {"Quiz end! You got "}
+                {"Quiz finished! You got "}
                 {score}
                 {" points!"}
               </span>
